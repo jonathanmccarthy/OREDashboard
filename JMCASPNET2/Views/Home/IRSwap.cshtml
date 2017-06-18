@@ -1,0 +1,271 @@
+﻿@{
+    ViewBag.Title = "Swap";
+}
+
+<h3>@ViewBag.Message</h3>
+
+<div ng-app="oreApp" ng-controller="oreCtrl" class="container">
+
+    <form id="SwapInputs">
+
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-sm-2">Trade Id:</div>
+                <div class="col-sm-10"><input type="text" ng-model="Swap.Details.TradeId"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">Counterparty:</div>
+                <div class="col-sm-10"><input type="text" ng-model="Swap.Details.CounterParty"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">Netting Set:</div>
+                <div class="col-sm-10"><input type="text" ng-model="Swap.Details.NettingSetId"></div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-sm-6"><h3>Pay</h3></div>
+                <div class="col-sm-6"><h3>Receive</h3></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Leg Type:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.LegType" ng-options="x.text for x in LegTypes track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Leg Type:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.LegType" ng-options="x.text for x in LegTypes track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Currency:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.Currency" ng-options="x.text for x in Currencies track by x.id"></select>
+                </div>
+                <div class="col-sm-3">Currency:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.Currency" ng-options="x.text for x in Currencies track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Notional:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.PayLeg.Notional"></div>
+                <div class="col-sm-3">Notional:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.ReceiveLeg.Notional"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Day Count:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.DayCounter" ng-options="x.text for x in DayCounts track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Day Count:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.DayCounter" ng-options="x.text for x in DayCounts track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Payment Convention:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.PaymentConvention" ng-options="x.text for x in PaymentConventions track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Payment Convention:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.PaymentConvention" ng-options="x.text for x in PaymentConventions track by x.id"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-sm-3"><div ng-hide="!isFixedLeg(true)">Rate:</div></div>
+                <div class="col-sm-3"><div ng-hide="!isFixedLeg(true)"><input type="text" ng-model="Swap.Details.PayLeg.Rate"></div></div>
+                <div class="col-sm-3"><div ng-hide="!isFixedLeg(false)">Rate:</div></div>
+                <div class="col-sm-3"><div ng-hide="!isFixedLeg(false)"><input type="text" ng-model="Swap.Details.ReceiveLeg.Rate"></div></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)">Index:</div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)">
+                    <select ng-model="Swap.Details.PayLeg.Index" ng-options="x.text for x in Indexes track by x.id"></select>
+                </div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)">Index:</div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)">
+                    <select ng-model="Swap.Details.ReceiveLeg.Index" ng-options="x.text for x in Indexes track by x.id"></select>
+                </div></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)">Spread:</div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)"><input type="text" ng-model="Swap.Details.PayLeg.Spread"></div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)">Spread:</div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)"><input type="text" ng-model="Swap.Details.ReceiveLeg.Spread"></div></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)">Is In Arrears:</div></div>
+                <div class="col-sm-3">
+                    <div ng-hide="isFixedLeg(true)">
+                        <select ng-model="Swap.Details.PayLeg.IsInArrears" ng-options="x.text for x in BooleanValues track by x.id"></select>
+                    </div>
+                </div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)">Is In Arrears:</div></div>
+                <div class="col-sm-3">
+                    <div ng-hide="isFixedLeg(false)">
+                        <select ng-model="Swap.Details.ReceiveLeg.IsInArrears" ng-options="x.text for x in BooleanValues track by x.id"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)">Fixing Days:</div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(true)"><input type="text" ng-model="Swap.Details.PayLeg.FixingDays"></div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)">Fixing Days:</div></div>
+                <div class="col-sm-3"><div ng-hide="isFixedLeg(false)"><input type="text" ng-model="Swap.Details.ReceiveLeg.FixingDays"></div></div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-sm-6"><h3>Schedule</h3></div>
+                <div class="col-sm-6"><h3>Schedule</h3></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Start Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.PayLeg.Schedule.StartDate"></div>
+                <div class="col-sm-3">Start Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.ReceiveLeg.Schedule.StartDate"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">End Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.PayLeg.Schedule.EndDate"></div>
+                <div class="col-sm-3">End Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.ReceiveLeg.Schedule.EndDate"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Tenor:</div>
+                <div class="col-sm-3">
+                    <input type="text" ng-model="Swap.Details.PayLeg.Schedule.Tenor" size="4">
+                    <select ng-model="Swap.Details.PayLeg.Schedule.TenorPeriod" ng-options="x.text for x in Tenors track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Tenor:</div>
+                <div class="col-sm-3">
+                    <input type="text" ng-model="Swap.Details.ReceiveLeg.Schedule.Tenor" size="4">
+                    <select ng-model="Swap.Details.ReceiveLeg.Schedule.TenorPeriod" ng-options="x.text for x in Tenors track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Calendar:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.Schedule.Calendar" ng-options="x.text for x in Calendars track by x.id"></select>
+                </div>
+                <div class="col-sm-3">Calendar:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.Schedule.Calendar" ng-options="x.text for x in Calendars track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Convention:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.Schedule.Convention" ng-options="x.text for x in PaymentConventions track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Convention:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.Schedule.Convention" ng-options="x.text for x in PaymentConventions track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Term Convention:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.Schedule.TermConvention" ng-options="x.text for x in PaymentConventions track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Term Convention:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.Schedule.TermConvention" ng-options="x.text for x in PaymentConventions track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Rule:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.PayLeg.Schedule.Rule" ng-options="x.text for x in ScheduleRules track by x.id"></select>
+                </div>
+
+                <div class="col-sm-3">Rule:</div>
+                <div class="col-sm-3">
+                    <select ng-model="Swap.Details.ReceiveLeg.Schedule.Rule" ng-options="x.text for x in ScheduleRules track by x.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">End Of Month:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.PayLeg.Schedule.EndOfMonth"></div>
+                <div class="col-sm-3">End Of Month:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.ReceiveLeg.Schedule.EndOfMonth"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">First Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.PayLeg.Schedule.FirstDate"></div>
+                <div class="col-sm-3">First Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.ReceiveLeg.Schedule.FirstDate"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Last Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.PayLeg.Schedule.LastDate"></div>
+                <div class="col-sm-3">Last Date:</div>
+                <div class="col-sm-3"><input type="text" ng-model="Swap.Details.ReceiveLeg.Schedule.LastDate"></div>
+            </div>
+        </div>
+
+        <input type="button" value="Run ORE" ng-click="ButtonClick()" />
+        <div id="RunStatus" style="color:red"></div>
+    </form>
+
+    <div class="panel panel-default">
+
+        <div class="col-sm-12"><h3>NPV Results</h3></div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px;">Maturity</th>
+                    <th style="min-width: 40px;">Maturity Time</th>
+                    <th style="min-width: 40px;">NPV</th>
+                    <th style="min-width: 40px;">NPV Currency</th>
+                    <th style="min-width: 40px;">NPV Base</th>
+                    <th style="min-width: 40px;">Base Currency</th>
+                    <th style="min-width: 40px;">Notional</th>
+                    <th style="min-width: 40px;">Notional Base</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="min-width: 100px;">{{Results.Maturity}}</td>
+                    <td style="min-width: 40px;">{{Results.MaturityTime}}</td>
+                    <td style="min-width: 40px;">{{Results.NPV}}</td>
+                    <td style="min-width: 40px;">{{Results.NpvCurrency}}</td>
+                    <td style="min-width: 40px;">{{Results.NPVBase}}</td>
+                    <td style="min-width: 40px;">{{Results.BaseCurrency}}</td>
+                    <td style="min-width: 40px;">{{Results.Notional}}</td>
+                    <td style="min-width: 40px;">{{Results.NotionalBase}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

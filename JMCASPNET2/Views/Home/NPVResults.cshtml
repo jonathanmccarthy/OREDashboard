@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "NPV Results";
+}
+
+<h3>@ViewBag.Message</h3>
+
+<div ng-app="oreApp" ng-controller="oreCtrl" class="container">
+
+    <input type="button" value="Refresh" ng-click="RefreshButtonClick()" />
+
+
+    <div class="panel panel-default">
+
+        <div class="col-sm-12"><h3>NPV Results</h3></div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px;">Maturity</th>
+                    <th style="min-width: 40px;">Maturity Time</th>
+                    <th style="min-width: 40px;">NPV</th>
+                    <th style="min-width: 40px;">NPV Currency</th>
+                    <th style="min-width: 40px;">NPV Base</th>
+                    <th style="min-width: 40px;">Base Currency</th>
+                    <th style="min-width: 40px;">Notional</th>
+                    <th style="min-width: 40px;">Notional Base</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="min-width: 100px;">{{Results.Maturity}}</td>
+                    <td style="min-width: 40px;">{{Results.MaturityTime | number:2}}</td>
+                    <td style="min-width: 40px;">{{Results.NPV | number:0}}</td>
+                    <td style="min-width: 40px;">{{Results.NpvCurrency}}</td>
+                    <td style="min-width: 40px;">{{Results.NPVBase | number:0}}</td>
+                    <td style="min-width: 40px;">{{Results.BaseCurrency}}</td>
+                    <td style="min-width: 40px;">{{Results.Notional | number:0}}</td>
+                    <td style="min-width: 40px;">{{Results.NotionalBase | number:0}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="panel panel-default">
+        <canvas id="exposureChart" class="chart chart-line" chart-data="data" chart-series="series"></canvas>
+    </div>
+
+    <div class="panel panel-default">
+
+        <div class="row">
+            <div class="col-sm-12"><h3>Exposure Results</h3></div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px;">Date</th>
+                    <th>Time</th>
+                    <th>EPE</th>
+                    <th>ENE</th>
+                    <th>Allocated EPE</th>
+                    <th>Allocated ENE</th>
+                    <th>PFE</th>
+                    <th>BaselEE</th>
+                    <th>BaselEEE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in ExposureResults">
+                    <td style="min-width: 100px;">{{x.Date}}</td>
+                    <td style="min-width: 40px;">{{x.Time | number:2}}</td>
+                    <td style="min-width: 40px;">{{x.EPE | number:0}}</td>
+                    <td style="min-width: 40px;">{{x.ENE | number:0}}</td>
+                    <td style="min-width: 40px;">{{x.AllocatedEPE | number:0}}</td>
+                    <td style="min-width: 40px;">{{x.AllocatedENE | number:0}}</td>
+                    <td style="min-width: 40px;">{{x.PFE | number:0}}</td>
+                    <td style="min-width: 40px;">{{x.BaselEE | number:0}}</td>
+                    <td style="min-width: 40px;">{{x.BaselEEE | number:0}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
