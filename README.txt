@@ -30,5 +30,5 @@ Click on the NPVResults tab to view the exposure profile.
 
 
 For queries contact:
-jonathanmcc@eircom.net
+jonathanfmcc@gmail.com
 2017 Abbot Computing Limited.
